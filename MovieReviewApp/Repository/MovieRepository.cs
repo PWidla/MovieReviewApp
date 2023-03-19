@@ -39,7 +39,7 @@ namespace MovieReviewApp.Repository
 
         public bool MovieExists(int movieId)
         {
-            throw new NotImplementedException();
+            return (_context.Movies.Any(m => m.Id == movieId));
         }
     }
 }

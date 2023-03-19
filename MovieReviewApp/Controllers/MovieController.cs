@@ -26,5 +26,39 @@ namespace MovieReviewApp.Controllers
             }
             return Ok(movies);
         }
+
+        [HttpGet("{movieId}")]
+        [ProducesResponseType(200, Type = typeof(Movie))]
+        [ProducesResponseType(400)]
+        public IActionResult GetMovie(int movieId)
+        {
+            if(!_movieRepository.MovieExists(movieId))
+                return NotFound();
+
+            var movie = _movieRepository.GetMovie(movieId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            return Ok(movie);
+        }
+
+        [HttpGet("{movieId/rating}")]
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(400)]
+        public IActionResult GetMovieRating(int movieId)
+        {
+            if(!_movieRepository.MovieExists(movieId))
+                return NotFound();
+
+            var rating = _movieRepository.GetMovieRating(movieId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(rating);
+        }
+
+
     }
 }
