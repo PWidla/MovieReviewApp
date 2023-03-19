@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using MovieReviewApp.Dto;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
 
@@ -9,17 +11,20 @@ namespace MovieReviewApp.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IMapper _mapper;
 
-        public MovieController(IMovieRepository movieRepository)
+        public MovieController(IMovieRepository movieRepository, IMapper mapper)
         {
             _movieRepository = movieRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
         public IActionResult GetMovies() 
         {
-            var movies = _movieRepository.GetMovies();
+            var movies = _mapper.Map<List<MovieDto>>(_movieRepository.GetMovies());
+
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -35,7 +40,7 @@ namespace MovieReviewApp.Controllers
             if(!_movieRepository.MovieExists(movieId))
                 return NotFound();
 
-            var movie = _movieRepository.GetMovie(movieId);
+            var movie = _mapper.Map<MovieDto>(_movieRepository.GetMovie(movieId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
