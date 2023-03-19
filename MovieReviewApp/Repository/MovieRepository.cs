@@ -6,7 +6,7 @@ namespace MovieReviewApp.Repository
 {
     public class MovieRepository : IMovieRepository
     {
-        private readonly DataContext _context;
+        private DataContext _context;
 
         public MovieRepository(DataContext context)
         {
