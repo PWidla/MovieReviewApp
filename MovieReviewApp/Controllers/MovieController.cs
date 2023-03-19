@@ -43,7 +43,7 @@ namespace MovieReviewApp.Controllers
             return Ok(movie);
         }
 
-        [HttpGet("{movieId/rating}")]
+        [HttpGet("{movieId}/rating")]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetMovieRating(int movieId)
