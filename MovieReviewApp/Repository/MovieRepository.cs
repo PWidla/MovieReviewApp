@@ -1,9 +1,10 @@
 ﻿using MovieReviewApp.Data;
+using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
 
 namespace MovieReviewApp.Repository
 {
-    public class MovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly DataContext _context;
 
