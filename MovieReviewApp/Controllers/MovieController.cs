@@ -8,7 +8,7 @@ namespace MovieReviewApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MovieController : ControllerBase
+    public class MovieController : Controller
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
