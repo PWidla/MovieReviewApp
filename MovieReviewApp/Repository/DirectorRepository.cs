@@ -17,27 +17,27 @@ namespace MovieReviewApp.Repository
         }
         public bool DirectorExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Directors.Any(d => d.Id == id);
         }
 
         public Director GetDirector(int id)
         {
-            throw new NotImplementedException();
+            return _context.Directors.FirstOrDefault(d => d.Id == id);
         }
 
         public ICollection<Director> GetDirectories()
         {
-            throw new NotImplementedException();
+            return _context.Directors.ToList();
         }
 
         public ICollection<Director> GetDirectorOfMovie(int movieId)
         {
-            throw new NotImplementedException();
+            return _context.MovieDirectors.Where(m => m.MovieId == movieId).Select(d => d.Director).ToList();
         }
 
         public ICollection<Movie> GetMovieByDirector(int directorId)
         {
-            throw new NotImplementedException();
+            return _context.MovieDirectors.Where(d => d.DirectorId == directorId).Select(m => m.Movie).ToList();
         }
     }
 }
