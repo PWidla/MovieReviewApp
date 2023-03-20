@@ -50,13 +50,13 @@ namespace MovieReviewApp.Controllers
             return Ok(country);
         }
 
-        [HttpGet("director/{countryId}")]
+        [HttpGet("/directors/{ownerId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Director>))]
         [ProducesResponseType(400)]
-        public IActionResult GetDirectorsByCountry(int countryId)
+        public IActionResult GetDirectorsByCountry(int ownerId)
         {
             var director = _mapper.Map<List<CountryDto>>(
-                _countryRepository.GetDirectorsFromACountry(countryId));
+                _countryRepository.GetDirectorsFromACountry(ownerId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
