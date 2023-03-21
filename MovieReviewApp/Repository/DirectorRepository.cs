@@ -35,7 +35,7 @@ namespace MovieReviewApp.Repository
             return _context.MovieDirectors.Where(m => m.MovieId == movieId).Select(d => d.Director).ToList();
         }
 
-        public ICollection<Movie> GetMovieByDirector(int directorId)
+        public ICollection<Movie> GetMoviesByDirector(int directorId)
         {
             return _context.MovieDirectors.Where(d => d.DirectorId == directorId).Select(m => m.Movie).ToList();
         }

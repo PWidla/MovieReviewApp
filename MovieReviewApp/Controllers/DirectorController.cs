@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Data;
 using MovieReviewApp.Dto;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
-using MovieReviewApp.Repository;
 
 namespace MovieReviewApp.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class DirectorController : Controller
     {
         private readonly IDirectorRepository _directorRepository;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public DirectorController(IDirectorRepository directorRepository, Mapper mapper)
+        public DirectorController(IDirectorRepository directorRepository, IMapper mapper)
         {
             _directorRepository = directorRepository;
             _mapper = mapper;
@@ -31,7 +31,6 @@ namespace MovieReviewApp.Controllers
             }
             return Ok(directors);
         }
-
 
         [HttpGet("{directorId}")]
         [ProducesResponseType(200, Type = typeof(Director))]
@@ -52,13 +51,13 @@ namespace MovieReviewApp.Controllers
         [HttpGet("{directorId}/movies")]
         [ProducesResponseType(200, Type = typeof(Director))]
         [ProducesResponseType(400)]
-        public IActionResult GetMovieByDirector(int directorId) 
+        public IActionResult GetMoviesByDirector(int directorId) 
         {
             if(!_directorRepository.DirectorExists(directorId))
                 return NotFound();
 
             var director = _mapper.Map<List<MovieDto>>(
-                _directorRepository.GetMovieByDirector(directorId));
+                _directorRepository.GetMoviesByDirector(directorId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
