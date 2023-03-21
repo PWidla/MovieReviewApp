@@ -2,6 +2,7 @@
 using MovieReviewApp.Data;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
+using System.Diagnostics.Metrics;
 
 namespace MovieReviewApp.Repository
 {
@@ -36,6 +37,18 @@ namespace MovieReviewApp.Repository
         public ICollection<Movie> GetMoviesByDirector(int directorId)
         {
             return _context.MovieDirectors.Where(d => d.DirectorId == directorId).Select(m => m.Movie).ToList();
+        }
+
+        public bool CreateDirector(Director director)
+        {
+            _context.Add(director);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
