@@ -25,13 +25,32 @@ namespace MovieReviewApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Review>))]
         public IActionResult GetReviews()
         {
-            var reviews = _mapper.Map<List<ReviewDto>>(_movieRepository.GetMovies());
+            var reviews = _mapper.Map<List<ReviewDto>>(_reviewRepository.GetReviews());
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(movies);
+            return Ok(reviews);
         }
+
+        [HttpGet("{reviewId}")]
+        [ProducesResponseType(200, Type = typeof(Review))]
+        [ProducesResponseType(400)]
+        public IActionResult GetMovie(int reviewId)
+        {
+            if (!_reviewRepository.ReviewExists(reviewId))
+                return NotFound();
+
+            var review = _mapper.Map<ReviewDto>(_reviewRepository.GetReview(reviewId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(review);
+        }
+
+
+
     }
 }
