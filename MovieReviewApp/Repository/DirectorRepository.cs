@@ -25,7 +25,7 @@ namespace MovieReviewApp.Repository
             return _context.Directors.FirstOrDefault(d => d.Id == id);
         }
 
-        public ICollection<Director> GetDirectories()
+        public ICollection<Director> GetDirectors()
         {
             return _context.Directors.ToList();
         }

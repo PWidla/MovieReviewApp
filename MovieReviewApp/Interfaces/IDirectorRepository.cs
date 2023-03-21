@@ -4,7 +4,7 @@ namespace MovieReviewApp.Interfaces
 {
     public interface IDirectorRepository
     {
-        ICollection<Director> GetDirectories();
+        ICollection<Director> GetDirectors();
         Director GetDirector(int id);
         ICollection<Director> GetDirectorOfMovie(int movieId);
         ICollection<Movie> GetMovieByDirector(int directorId);
