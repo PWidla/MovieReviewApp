@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Dto;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
+using MovieReviewApp.Repository;
 
 namespace MovieReviewApp.Controllers
 {
@@ -65,5 +66,36 @@ namespace MovieReviewApp.Controllers
             return Ok(director);
         }
 
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateDirector([FromBody] DirectorDto directorCreate)
+        {
+            if (directorCreate == null)
+                return BadRequest();
+
+            var director = _directorRepository.GetDirectors()
+                .Where(c => c.LastName.Trim().ToUpper() == directorCreate.LastName.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (director != null)
+            {
+                ModelState.AddModelError("", "Director already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var directorMap = _mapper.Map<Director>(directorCreate);
+
+            if (!_directorRepository.CreateDirector(directorMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
+        }
     }
 }
