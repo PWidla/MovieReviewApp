@@ -1,4 +1,5 @@
 ﻿using MovieReviewApp.Models;
+using System.Diagnostics.Metrics;
 
 namespace MovieReviewApp.Interfaces
 {
@@ -9,5 +10,7 @@ namespace MovieReviewApp.Interfaces
         Country GetCountryByDirector(int directorId);
         ICollection<Director> GetDirectorsFromACountry(int countryId);
         bool CountryExist(int id);
+        bool CreateCountry(Country country);
+        bool Save();
     }
 }
