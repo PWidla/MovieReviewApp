@@ -75,7 +75,7 @@ namespace MovieReviewApp.Controllers
                 return BadRequest();
 
             var director = _directorRepository.GetDirectors()
-                .Where(c => c.LastName.Trim().ToUpper() == directorCreate.LastName.TrimEnd().ToUpper())
+                .Where(c => c.LastName.Trim().ToUpper() == directorCreate.LastName.Trim().ToUpper())
                 .FirstOrDefault();
 
             if (director != null)

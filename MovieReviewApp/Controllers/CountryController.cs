@@ -73,7 +73,7 @@ namespace MovieReviewApp.Controllers
                 return BadRequest();
 
             var country = _countryRepository.GetCountries()
-                .Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.TrimEnd().ToUpper())
+                .Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.Trim().ToUpper())
                 .FirstOrDefault();
 
             if (country != null)
