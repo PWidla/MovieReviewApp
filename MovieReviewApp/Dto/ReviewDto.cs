@@ -1,4 +1,4 @@
-﻿namespace MovieReviewApp.Controllers
+﻿namespace MovieReviewApp.Dto
 {
     public class ReviewDto
     {
