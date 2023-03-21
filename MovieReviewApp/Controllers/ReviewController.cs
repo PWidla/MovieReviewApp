@@ -50,7 +50,17 @@ namespace MovieReviewApp.Controllers
             return Ok(review);
         }
 
+        [HttpGet("movie/{movieId}")]
+        [ProducesResponseType(200, Type = typeof(Review))]
+        [ProducesResponseType(400)]
+        public IActionResult GetReviewsForAMovie(int movieId)
+        {
+            var reviews = _mapper.Map<List<ReviewDto>>(_reviewRepository.GetReviewsOfAMovie(movieId));
+            
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-
+            return Ok(reviews);
+        }
     }
 }
