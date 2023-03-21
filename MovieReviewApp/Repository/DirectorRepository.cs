@@ -18,6 +18,13 @@ namespace MovieReviewApp.Repository
             return _context.Directors.Any(d => d.Id == id);
         }
 
+        public bool CreateDirector(Director director)
+        {
+            _context.Add(director);
+            return Save();
+
+        }
+
         public Director GetDirector(int id)
         {
             return _context.Directors.FirstOrDefault(d => d.Id == id);
@@ -36,6 +43,11 @@ namespace MovieReviewApp.Repository
         public ICollection<Movie> GetMoviesByDirector(int directorId)
         {
             return _context.MovieDirectors.Where(d => d.DirectorId == directorId).Select(m => m.Movie).ToList();
+        }
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
