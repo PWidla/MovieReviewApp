@@ -49,7 +49,7 @@ namespace MovieReviewApp.Controllers
         }
 
         [HttpGet("{directorId}/movies")]
-        [ProducesResponseType(200, Type = typeof(Director))]
+        [ProducesResponseType(200, Type = typeof(Movie))]
         [ProducesResponseType(400)]
         public IActionResult GetMoviesByDirector(int directorId) 
         {
