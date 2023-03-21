@@ -7,13 +7,11 @@ namespace MovieReviewApp.Repository
 {
     public class DirectorRepository : IDirectorRepository
     {
-        private readonly DataContext _context;
-        private readonly Mapper _mapper;
+        private DataContext _context;
 
-        public DirectorRepository(DataContext context, Mapper mapper)
+        public DirectorRepository(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
         public bool DirectorExists(int id)
         {
