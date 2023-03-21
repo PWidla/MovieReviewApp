@@ -15,22 +15,22 @@ namespace MovieReviewApp.Repository
         }
         public Review GetReview(int reviewId)
         {
-            return _context.
+            return _context.Reviews.FirstOrDefault(r => r.Id == reviewId);
         }
 
         public ICollection<Review> GetReviews()
         {
-            throw new NotImplementedException();
+            return _context.Reviews.ToList();
         }
 
         public ICollection<Review> GetReviewsOfAMovie(int movieId)
         {
-            throw new NotImplementedException();
+            return _context.Reviews.Where(m => m.Movie.Id == movieId).ToList();
         }
 
         public bool ReviewExists(int reviewId)
         {
-            throw new NotImplementedException();
+            return _context.Reviews.Any(r => r.Id == reviewId);
         }
     }
 }
