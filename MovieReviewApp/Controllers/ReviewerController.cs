@@ -33,7 +33,7 @@ namespace MovieReviewApp.Controllers
             return Ok(reviewers);
         }
 
-        [HttpGet]
+        [HttpGet("{reviewerId}")]
         [ProducesResponseType(200, Type = typeof(Reviewer))]
         [ProducesResponseType(400)]
         public IActionResult GetReviewer(int reviewerId)
@@ -48,6 +48,23 @@ namespace MovieReviewApp.Controllers
                 return BadRequest(ModelState);
 
             return Ok(reviewer);
+        }
+
+        [HttpGet("{reviewerId}/reviews")]
+        //[ProducesResponseType(200, Type = typeof(Reviewer))]
+        //[ProducesResponseType(400)]
+        public IActionResult GetReviewsByReviewer(int reviewerId)
+        {
+            if (!_reviewerRepository.ReviewerExists(reviewerId))
+                return NotFound();
+
+            var reviews = _mapper.Map<List<ReviewerDto>>(
+                _reviewerRepository.GetReviewsByReviewer(reviewerId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(reviews);
         }
 
     }
