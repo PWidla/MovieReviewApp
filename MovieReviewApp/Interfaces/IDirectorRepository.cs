@@ -9,5 +9,7 @@ namespace MovieReviewApp.Interfaces
         ICollection<Director> GetDirectorOfMovie(int movieId);
         ICollection<Movie> GetMoviesByDirector(int directorId);
         bool DirectorExists(int id);
+        bool CreateDirector(Director director);
+        bool Save();
     }
 }
