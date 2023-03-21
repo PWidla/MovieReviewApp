@@ -17,6 +17,12 @@ namespace MovieReviewApp.Repository
             return _context.Categories.Any(c => c.Id == id);
         }
 
+        public bool CreateCategory(Category category)
+        {
+            _context.Add(category);
+            return Save();
+        }
+
         public ICollection<Category> GetCategories()
         {
             //return _context.Categories.ToList();
@@ -32,5 +38,11 @@ namespace MovieReviewApp.Repository
         {
             return _context.MovieCategories.Where(c => c.CategoryId == categoryId).Select(m => m.Movie).ToList();
         }
-     }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false; 
+        }
+    }
 }
