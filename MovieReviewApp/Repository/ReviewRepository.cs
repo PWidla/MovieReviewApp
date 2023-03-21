@@ -7,11 +7,13 @@ namespace MovieReviewApp.Repository
 {
     public class ReviewRepository : IReviewRepository
     {
-        private DataContext _context;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public ReviewRepository(DataContext context)
+        public ReviewRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public Review GetReview(int reviewId)
         {
