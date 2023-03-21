@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Data;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
@@ -17,22 +18,22 @@ namespace MovieReviewApp.Repository
         }
         public Reviewer GetReviewer(int reviewerId)
         {
-            throw new NotImplementedException();
+            return _context.Reviewers.Where(r => r.Id == reviewerId).Include(e => e.Reviews).FirstOrDefault();
         }
 
         public ICollection<Reviewer> GetReviewers()
         {
-            throw new NotImplementedException();
+            return _context.Reviewers.ToList();
         }
 
         public ICollection<Review> GetReviewsByReviewer(int reviewerId)
         {
-            throw new NotImplementedException();
+            return _context.Reviews.Where(r => r.Reviewer.Id == reviewerId).ToList(); 
         }
 
         public bool ReviewerExists(int reviewerId)
         {
-            throw new NotImplementedException();
+            return _context.Reviewers.Any(r => r.Id == reviewerId);
         }
     }
 }
