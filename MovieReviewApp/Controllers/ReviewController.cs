@@ -13,11 +13,15 @@ namespace MovieReviewApp.Controllers
     public class ReviewController : Controller
     {
         private readonly IReviewRepository _reviewRepository;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IReviewerRepository _reviewerRepository;
         private readonly IMapper _mapper;
 
-        public ReviewController(IReviewRepository reviewRepository, IMapper mapper)
+        public ReviewController(IReviewRepository reviewRepository, IMovieRepository movieRepository, IReviewerRepository reviewerRepository, IMapper mapper)
         {
             _reviewRepository = reviewRepository;
+            _movieRepository = movieRepository;
+            _reviewerRepository = reviewerRepository;
             _mapper = mapper;
         }
 
@@ -61,6 +65,40 @@ namespace MovieReviewApp.Controllers
                 return BadRequest(ModelState);
 
             return Ok(reviews);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateReview([FromQuery] int reviewerId, [FromQuery] int movieId, [FromBody] ReviewDto reviewCreate)
+        {
+            if (reviewCreate == null)
+                return BadRequest();
+
+            var review = _reviewRepository.GetReviews()
+                .Where(c => c.Title.Trim().ToUpper() == reviewCreate.Title.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (review != null)
+            {
+                ModelState.AddModelError("", "Review already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var reviewMap = _mapper.Map<Review>(reviewCreate);
+            reviewMap.Movie = _movieRepository.GetMovie(movieId);
+            reviewMap.Reviewer = _reviewerRepository.GetReviewer(movieId);
+
+            if (!_reviewRepository.CreateReview(reviewMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

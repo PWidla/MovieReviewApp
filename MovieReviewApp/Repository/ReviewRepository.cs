@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MovieReviewApp.Data;
 using MovieReviewApp.Interfaces;
 using MovieReviewApp.Models;
+using System.IO;
 
 namespace MovieReviewApp.Repository
 {
