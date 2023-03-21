@@ -12,11 +12,13 @@ namespace MovieReviewApp.Controllers
     public class DirectorController : Controller
     {
         private readonly IDirectorRepository _directorRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public DirectorController(IDirectorRepository directorRepository, IMapper mapper)
+        public DirectorController(IDirectorRepository directorRepository, ICountryRepository countryRepository, IMapper mapper)
         {
             _directorRepository = directorRepository;
+            _countryRepository = countryRepository;
             _mapper = mapper;
         }
 
@@ -69,7 +71,7 @@ namespace MovieReviewApp.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateDirector([FromBody] DirectorDto directorCreate)
+        public IActionResult CreateDirector([FromQuery] int countryId, [FromBody] DirectorDto directorCreate)
         {
             if (directorCreate == null)
                 return BadRequest();
@@ -88,6 +90,7 @@ namespace MovieReviewApp.Controllers
                 return BadRequest(ModelState);
 
             var directorMap = _mapper.Map<Director>(directorCreate);
+            directorMap.Country = _countryRepository.GetCountry(countryId);
 
             if (!_directorRepository.CreateDirector(directorMap))
             {
