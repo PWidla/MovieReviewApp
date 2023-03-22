@@ -12,11 +12,15 @@ namespace MovieReviewApp.Controllers
     public class MovieController : Controller
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
 
-        public MovieController(IMovieRepository movieRepository, IMapper mapper)
+        public MovieController(IMovieRepository movieRepository,
+            IReviewRepository reviewRepository,
+            IMapper mapper)
         {
             _movieRepository = movieRepository;
+            _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
 
@@ -96,5 +100,38 @@ namespace MovieReviewApp.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{movieId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateMovie(int movieId, 
+            [FromQuery] int directorId, 
+            [FromQuery] int catId, 
+            [FromBody] MovieDto updatedMovie)
+        {
+            if (updatedMovie == null)
+                return BadRequest();
+
+            if (movieId != updatedMovie.Id)
+                return BadRequest(ModelState);
+
+            if (!_movieRepository.MovieExists(movieId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var movieMap = _mapper.Map<Movie>(updatedMovie);
+            if (!_movieRepository.UpdateMovie(directorId, catId, movieMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating director");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+
     }
 }
