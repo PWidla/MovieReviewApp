@@ -97,7 +97,7 @@ namespace MovieReviewApp.Controllers
             return Ok("Successfully created");
         }
 
-        [HttpPut("{categoryId")]
+        [HttpPut("{categoryId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]

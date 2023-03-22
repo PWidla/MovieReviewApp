@@ -11,7 +11,7 @@ namespace MovieReviewApp.Interfaces
         ICollection<Director> GetDirectorsFromACountry(int countryId);
         bool CountryExist(int id);
         bool CreateCountry(Country country);
-        bool UpdateCountry(Country country);
+        //bool UpdateCountry(Country country);
         bool Save();
     }
 }
