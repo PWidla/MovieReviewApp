@@ -50,5 +50,11 @@ namespace MovieReviewApp.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateDirector(Director director)
+        {
+            _context.Update(director);
+            return Save();
+        }
     }
 }
