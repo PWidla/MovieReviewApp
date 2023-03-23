@@ -99,7 +99,7 @@ namespace MovieReviewApp.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int countryId, [FromBody] CountryDto updatedCountry)
+        public IActionResult UpdateCountry(int countryId, [FromBody] CountryDto updatedCountry)
         {
             if (updatedCountry == null)
                 return BadRequest();
@@ -123,5 +123,27 @@ namespace MovieReviewApp.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{countryId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCountry(int countryId) 
+        {
+            if (!_countryRepository.CountryExist(countryId))
+                return BadRequest();
+
+            var countryToDelete = _countryRepository.GetCountry(countryId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_countryRepository.DeleteCountry(countryToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting country");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }
