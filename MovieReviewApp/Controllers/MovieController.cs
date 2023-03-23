@@ -132,6 +132,34 @@ namespace MovieReviewApp.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{movieId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteMovie(int movieId)
+        {
+            if (!_movieRepository.MovieExists(movieId))
+                return NotFound();
 
+            var reviewsToDelete = _reviewRepository.GetReviewsOfAMovie(movieId);
+            var movieToDelete = _movieRepository.GetMovie(movieId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.DeleteReviews(reviewsToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting reviews");
+                StatusCode(500, ModelState);
+            }
+
+            if(!_movieRepository.DeleteMovie(movieToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting movie");
+                StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }
