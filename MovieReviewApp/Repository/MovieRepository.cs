@@ -75,6 +75,31 @@ namespace MovieReviewApp.Repository
 
         public bool UpdateMovie(int directorId, int categoryId, Movie movie)
         {
+            // Get the existing MovieDirector and MovieCategory objects for the movie
+            var movieDirector = movie.MovieDirectors.FirstOrDefault(md => md.DirectorId == directorId);
+            var movieCategory = movie.MovieCategories.FirstOrDefault(mc => mc.CategoryId == categoryId);
+
+            // Update the director and category IDs
+            if (movieDirector != null)
+            {
+                movieDirector.DirectorId = directorId;
+            }
+            else
+            {
+                movieDirector = new MovieDirector { DirectorId = directorId, MovieId = movie.Id };
+                movie.MovieDirectors.Add(movieDirector);
+            }
+
+            if (movieCategory != null)
+            {
+                movieCategory.CategoryId = categoryId;
+            }
+            else
+            {
+                movieCategory = new MovieCategory { CategoryId = categoryId, MovieId = movie.Id };
+                movie.MovieCategories.Add(movieCategory);
+            }
+
             _context.Update(movie);
             return Save();
         }

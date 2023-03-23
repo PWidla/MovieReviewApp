@@ -122,7 +122,7 @@ namespace MovieReviewApp.Controllers
             var reviewMap = _mapper.Map<Review>(updatedReview);
             if (!_reviewRepository.UpdateReview(reviewMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating reviewer");
+                ModelState.AddModelError("", "Something went wrong updating review");
                 return StatusCode(500, ModelState);
             }
 
