@@ -24,6 +24,12 @@ namespace MovieReviewApp.Repository
             return Save();
         }
 
+        public bool DeleteReview(Review review)
+        {
+            _context.Remove(review);
+            return Save();
+        }
+
         public Review GetReview(int reviewId)
         {
             return _context.Reviews.FirstOrDefault(r => r.Id == reviewId);
