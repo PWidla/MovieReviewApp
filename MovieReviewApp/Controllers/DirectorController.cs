@@ -54,9 +54,9 @@ namespace MovieReviewApp.Controllers
         [HttpGet("{directorId}/movies")]
         [ProducesResponseType(200, Type = typeof(Movie))]
         [ProducesResponseType(400)]
-        public IActionResult GetMoviesByDirector(int directorId) 
+        public IActionResult GetMoviesByDirector(int directorId)
         {
-            if(!_directorRepository.DirectorExists(directorId))
+            if (!_directorRepository.DirectorExists(directorId))
                 return NotFound();
 
             var director = _mapper.Map<List<MovieDto>>(
@@ -108,20 +108,20 @@ namespace MovieReviewApp.Controllers
         [ProducesResponseType(404)]
         public IActionResult UpdateDirector(int directorId, [FromBody] DirectorDto updatedDirector)
         {
-            if (updatedDirector == null) 
+            if (updatedDirector == null)
                 return BadRequest();
 
-            if(directorId != updatedDirector.Id)
+            if (directorId != updatedDirector.Id)
                 return BadRequest(ModelState);
 
-            if(!_directorRepository.DirectorExists(directorId))
+            if (!_directorRepository.DirectorExists(directorId))
                 return NotFound();
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var directorMap = _mapper.Map<Director>(updatedDirector);
-            if(!_directorRepository.UpdateDirector(directorMap))
+            if (!_directorRepository.UpdateDirector(directorMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating director");
                 return StatusCode(500, ModelState);
@@ -130,5 +130,27 @@ namespace MovieReviewApp.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{directorId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteDirector(int directorId) 
+        {
+            if(!_directorRepository.DirectorExists(directorId))
+                return NotFound();
+
+            var directorToDelete = _directorRepository.GetDirector(directorId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_directorRepository.DeleteDirector(directorToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting directror");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

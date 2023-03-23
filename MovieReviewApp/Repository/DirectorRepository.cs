@@ -56,5 +56,11 @@ namespace MovieReviewApp.Repository
             _context.Update(director);
             return Save();
         }
+
+        public bool DeleteDirector(Director director)
+        {
+            _context.Remove(director);
+            return Save();
+        }
     }
 }

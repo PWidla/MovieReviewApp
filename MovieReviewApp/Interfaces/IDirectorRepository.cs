@@ -11,6 +11,7 @@ namespace MovieReviewApp.Interfaces
         bool DirectorExists(int id);
         bool CreateDirector(Director director);
         bool UpdateDirector(Director director);
+        bool DeleteDirector(Director director);
         bool Save();
     }
 }
